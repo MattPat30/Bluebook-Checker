@@ -1,7 +1,37 @@
-import re
-str = 'an example word:cat!!'
-match = re.search(r'word:\w\w\w', str)
-if match:
-    print('found', match.group())
-else:
-    print('did not find')
+Sub CiteCheck()
+'
+' CiteCheck Macro
+
+Dim StrFind As String
+Dim StrRepl As String
+Dim i As Long
+
+
+StrFind = "<.   >"
+StrRepl = StrFind
+Set RngTxt = Selection.Range
+
+Options.DefaultHighlightColorIndex = wdTurquoise
+
+Selection.HomeKey wdStory
+
+    Selection.Find.ClearFormatting
+    Selection.Find.Replacement.ClearFormatting
+
+With ActiveDocument.Content.Find
+  .MatchWildcards = True
+  .Format = True
+  .MatchWholeWord = True
+  .MatchAllWordForms = False
+  .MatchWildcards = False
+  .Wrap = wdFindContinue
+  .Forward = True
+  For i = 0 To UBound(Split(StrFind, ","))
+    .Text = Split(StrFind, ",")(i)
+    .Replacement.Highlight = True
+    .Replacement.Text = Split(StrRepl, ",")(i)
+    .Execute Replace:=wdReplaceAll
+  Next i
+End With
+End Sub
+
