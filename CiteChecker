@@ -12,12 +12,16 @@ End With
 Dim StrFind As String
 Dim StrRepl As String
 Dim StrRule As String
+Dim StrText As String
+Dim StrReplace As String
 Dim i As Long
 
 ' check for 3 spaces after colon
 
+StrRule = "[BBS 2.1.3 - Two Spaces After a colon]"
 StrFind = ":   "
 StrRepl = StrFind
+StrText = StrFind & StrRule
 Set RngTxt = Selection.Range
 
 Options.DefaultHighlightColorIndex = wdTurquoise
@@ -38,15 +42,47 @@ With ActiveDocument.Content.Find
   For i = 0 To UBound(Split(StrFind, ","))
     .Text = Split(StrFind, ",")(i)
     .Replacement.Highlight = True
-    .Replacement.Text = Split(StrRepl, ",")(i)
+    .Replacement.Text = Split(StrText, ",")(i)
+    .Execute Replace:=wdReplaceAll
+  Next i
+End With
+
+StrFind = ": [! ]"
+StrRepl = StrFind
+StrReplace = ": "
+StrText = StrReplace & StrRule
+Set RngTxt = Selection.Range
+
+Options.DefaultHighlightColorIndex = wdTurquoise
+
+Selection.HomeKey wdStory
+
+    Selection.Find.ClearFormatting
+    Selection.Find.Replacement.ClearFormatting
+
+With ActiveDocument.Content.Find
+  .MatchWildcards = True
+  .Format = True
+  .MatchWholeWord = True
+  .MatchAllWordForms = False
+  .MatchWildcards = True
+  .Wrap = wdFindContinue
+  .Forward = True
+  For i = 0 To UBound(Split(StrFind, ","))
+    .Text = Split(StrFind, ",")(i)
+    .Replacement.Highlight = True
+    .Replacement.Text = Split(StrText, ",")(i)
     .Execute Replace:=wdReplaceAll
   Next i
 End With
 
 ' check for 3 spaces after period
   
+
+StrRule = "[BBS 2.1.1 - Two Spaces After a period]"
 StrFind = ".   "
 StrRepl = StrFind
+StrText = StrFind & StrRule
 Set RngTxt = Selection.Range
 
 Options.DefaultHighlightColorIndex = wdYellow
@@ -67,11 +103,39 @@ With ActiveDocument.Content.Find
   For i = 0 To UBound(Split(StrFind, ","))
     .Text = Split(StrFind, ",")(i)
     .Replacement.Highlight = True
-    .Replacement.Text = Split(StrRepl, ",")(i)
+    .Replacement.Text = Split(StrText, ",")(i)
     .Execute Replace:=wdReplaceAll
   Next i
 End With
 
+StrFind = ". [! ]"
+StrRepl = StrFind
+StrReplace = ". "
+StrText = StrReplace & StrRule
+Set RngTxt = Selection.Range
+
+Options.DefaultHighlightColorIndex = wdYellow
+
+Selection.HomeKey wdStory
+
+    Selection.Find.ClearFormatting
+    Selection.Find.Replacement.ClearFormatting
+
+With ActiveDocument.Content.Find
+  .MatchWildcards = True
+  .Format = True
+  .MatchWholeWord = True
+  .MatchAllWordForms = False
+  .MatchWildcards = True
+  .Wrap = wdFindContinue
+  .Forward = True
+  For i = 0 To UBound(Split(StrFind, ","))
+    .Text = Split(StrFind, ",")(i)
+    .Replacement.Highlight = True
+    .Replacement.Text = Split(StrText, ",")(i)
+    .Execute Replace:=wdReplaceAll
+  Next i
+End With
 
 ' Turn off Track changes
 
@@ -87,4 +151,3 @@ End With
     End With
 
 End Sub
-
